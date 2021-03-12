@@ -1,19 +1,37 @@
 package br.com.felipe.spring.data;
 
+import java.util.Scanner;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import br.com.felipe.spring.data.orm.Cargo;
-import br.com.felipe.spring.data.repository.CargoRepository;
+import br.com.felipe.spring.data.service.CrudCargoService;
+import br.com.felipe.spring.data.service.CrudFuncionarioService;
+import br.com.felipe.spring.data.service.CrudUnidadeTrabalhoService;
+import br.com.felipe.spring.data.service.RelatoriosService;
 
+@EnableJpaRepositories
 @SpringBootApplication
 public class SpringDataApplication implements CommandLineRunner {
 
-	private final CargoRepository repository;
+	private Boolean system = true;
+
+	private final CrudCargoService cargoService;
+	private final RelatoriosService relatoriosService;
+	private final CrudFuncionarioService funcionarioService;
+	private final CrudUnidadeTrabalhoService unidadeTrabalhoService;
 	
-	public SpringDataApplication(CargoRepository repository) {
-		this.repository = repository;
+	
+	public SpringDataApplication(CrudCargoService cargoService,
+									RelatoriosService relatoriosService,
+									CrudFuncionarioService funcionarioService,
+									CrudUnidadeTrabalhoService unidadeTrabalhoService) {
+		this.cargoService = cargoService;
+		this.relatoriosService = relatoriosService;
+		this.funcionarioService = funcionarioService;
+		this.unidadeTrabalhoService = unidadeTrabalhoService;
 	}
 
 	public static void main(String[] args) {
@@ -22,10 +40,37 @@ public class SpringDataApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Cargo cargo = new Cargo();
-		cargo.setDescricao("Desenvolvedor Java");
-		
-		repository.save(cargo);
+		Scanner scanner = new Scanner(System.in);
+
+		while (system) {
+			System.out.println("Qual ação voce quer executar");
+			System.out.println("0 - Sair");
+			System.out.println("1 - Cargo");
+			System.out.println("2 - Funcionario");
+			System.out.println("3 - Unidade Trabalho");
+			System.out.println("4 - Relatorio funcionario");
+
+			Integer action = scanner.nextInt();
+			switch (action) {
+			case 1:
+				cargoService.inicial(scanner);
+				break;
+			case 2:
+				funcionarioService.inicial(scanner);
+				break;
+			case 3:
+				unidadeTrabalhoService.inicial(scanner);
+				break;
+			case 4:
+				relatoriosService.inicial(scanner);
+				break;
+
+			default:
+				System.out.println("Finalizado");
+				system = false;
+				break;
+			}
+		}
 	}
 
 }
