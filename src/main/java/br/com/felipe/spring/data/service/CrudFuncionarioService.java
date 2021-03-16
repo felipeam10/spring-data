@@ -154,7 +154,7 @@ public class CrudFuncionarioService {
 		System.out.println("Qual página você deseja visualizar? ");
 		Integer page = scanner.nextInt();
 		
-		Pageable pageable = PageRequest.of(page, 5, Sort.unsorted()); // aqui faz a paginacao
+		Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.ASC, "nome")); //ordena pelo nome 
 		Page<Funcionario> funcionarios = funcionarioRepository.findAll(pageable);
 
 		System.out.println(funcionarios);
