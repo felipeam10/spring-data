@@ -3,6 +3,7 @@ package br.com.felipe.spring.data.repository;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -12,7 +13,9 @@ import br.com.felipe.spring.data.orm.Funcionario;
 import br.com.felipe.spring.data.orm.FuncionarioProjecao;
 
 @Repository
-public interface FuncionarioRepository extends PagingAndSortingRepository<Funcionario, Integer> { //PagingAndSortingRepository eh quem faz a paginação no spring
+public interface FuncionarioRepository extends PagingAndSortingRepository<Funcionario, Integer>,  //PagingAndSortingRepository eh quem faz a paginação no spring
+	JpaSpecificationExecutor<Funcionario> {
+	
 	List<Funcionario> findByNome(String nome);
 	
 	@Query("SELECT f FROM Funcionario f WHERE f.nome = :nome AND f.salario >= :salario AND f.dataContratacao = :data")
